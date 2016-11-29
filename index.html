@@ -131,7 +131,7 @@
         for(var i in window.syncdata){
           var sync=window.syncdata[i];
           if(sync.height<height){
-            window.chartlabels.push(sync.heigh);
+            window.chartlabels.push(sync.height);
             window.chartdata.push(0);
             count=window.chartdata.length-1;
             $("#peers").append("<h2>"+sync.height+"</h2>| ");
