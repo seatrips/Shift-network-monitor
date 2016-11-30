@@ -58,17 +58,18 @@
         },100);
         setTimeout(function(){
           ticker();
-        },1000);
+        },3000);
       }
 
       function checkPeers(){
         window.syncdata=[];
-        $.get(hostname + "/api/peers?state=2").success(function(data){
+        $.get(hostname + "/api/peers").success(function(data){
           data.peers.forEach(function(peer){
                 var data2 = {
                 "ip": peer.ip,
                 "version": peer.version,
-                "height": peer.height
+                "height": peer.height,
+		"broadhash": peer.broadhash
                 }
                 window.syncdata.push(data2);
           });
@@ -94,13 +95,13 @@
             window.chartlabels.push(sync.height);
             window.chartdata.push(0);
             count=window.chartdata.length-1;
-            $("#peers").append("<h2>"+sync.height+"</h2>| ");
+            $("#peers").append("<h2>"+sync.height+"</h2>");
             if(first&&(health>1)){
               first=false;
               highestHeight=sync.height;
             }
             if(first){
-              $("#height").html(sync.height);
+              $("#height").html(sync.height).append(" "+ sync.broadhash);
             }
             height=sync.height;
           }
@@ -109,7 +110,7 @@
           }
           window.chartdata[count]=window.chartdata[count]+1;
 
-          $("#peers").append("<b>"+sync.ip+"</b> "+sync.version+"| ");
+          $("#peers").append("<b>"+sync.ip+"</b> "+sync.version+" "+ sync.broadhash +"<p>");
         }
         $("#health").html((health*100/window.syncdata.length).toFixed(0));
         window.charttime.push("");
